@@ -71,7 +71,7 @@ const generatePdf = async ({
 	});
 };
 
-exports.onPostBuild = async (options, { allPages = false, paths = [], ...restProps }) => {
+exports.onPostBuild = async (options, { allPages = false, paths = [], useRegexPaths = false, ...restProps }) => {
 	const pageNodes = options
 		.getNodes()
 		.map(({ path }) => path)
@@ -80,6 +80,12 @@ exports.onPostBuild = async (options, { allPages = false, paths = [], ...restPro
 	if (allPages) {
 		const promisses = pageNodes.map((pagePath) => generatePdf({ pagePath, ...restProps }));
 		await Promise.all(promisses);
+	} else if(useRegexPaths) {
+		const pagesToExport = pageNodes.filter(pagePath => paths.find(path => pagePath.match(new RegExp(path))));
+		const promises = pagesToExport.map(pagePath => generatePdf({ pagePath, ...restProps }));
+
+		await Promise.all(promises);
+
 	} else {
 		const promisses = paths.map((pagePath) => {
 			if (pageNodes.includes(pagePath)) {
@@ -109,6 +115,9 @@ exports.pluginOptionsSchema = ({ Joi }) => {
 			.description(
 				`Array of page paths to convert to PDF. Path have to start with a leading /. You can pass nested paths like '/path/subpath'. For the root path use just single '/'.`
 			),
+		useRegexPaths: Joi.boolean()
+			.default(`false`)
+			.description(`When true all paths will be treated as regular expressions`),
 		pdfOptions: Joi.object().description(
 			`See pdf puppeteer options: https://github.com/puppeteer/puppeteer/blob/v5.5.0/docs/api.md#pagepdfoptions.`
 		),

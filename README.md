@@ -9,7 +9,7 @@
 </p>
 
 <h3 align="center">
-🖨 ⚙ 🔌  
+🖨 ⚙ 🔌
 </h3>
 
 <h3 align="center">
@@ -101,7 +101,8 @@ module.exports = {
   - `content` <[string]> Raw CSS content to be injected into frame.
 - `filePrefix` <[string]> Optional prefix for exported PDF file.
 - `outputPath` <[string]> Optional path where to store generated PDFs. Relative to current project dir. Defaults to `/public/exports`.
-- `paths` <[Array]<[string]>> Array of page paths to convert to PDF. Path have to start with a leading /. You can pass nested paths like '/path/subpath'. For the root path use just single '/'. Either `allPages` or `paths` property must be specified.
+- `paths` <[boolean]> When true all paths will be treated as regular expressions.
+- `useRegexPaths` <[Array]<[string]>> Array of page paths to convert to PDF. Path have to start with a leading /. You can pass nested paths like '/path/subpath'. For the root path use just single '/'. Either `allPages` or `paths` property must be specified.
 - `pdfOptions` <[Object]> Optional configuration. See pdf puppeteer options: https://github.com/puppeteer/puppeteer/blob/v5.5.0/docs/api.md#pagepdfoptions.
 
 ## Contribution
