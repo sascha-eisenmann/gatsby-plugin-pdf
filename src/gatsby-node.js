@@ -44,7 +44,12 @@ const generatePdf = async ({
 }) => {
 	await runWithWebServer(async base => {
 		const currentDir = process.cwd();
-		const browser = await puppeteer.launch();
+		const browser = await puppeteer.launch({
+			args: [
+				'--no-sandbox',
+				'--disable-setuid-sandbox'
+			]
+		});
 		const page = await browser.newPage();
 		const downloadDir = path.join(currentDir, outputPath);
 
